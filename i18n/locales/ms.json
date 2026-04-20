@@ -1,0 +1,159 @@
+{
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "delete": "Padam",
+    "edit": "Sunting",
+    "confirm": "Sahkan",
+    "loading": "Memuat...",
+    "error": "Ralat",
+    "success": "Berjaya",
+    "back": "Kembali",
+    "submit": "Hantar",
+    "search": "Cari",
+    "close": "Tutup"
+  },
+  "nav": {
+    "orders": "Pesanan",
+    "reports": "Laporan",
+    "admin": "Admin",
+    "account": "Akaun",
+    "logout": "Log keluar"
+  },
+  "auth": {
+    "login": "Log masuk",
+    "email": "Emel",
+    "password": "Kata laluan",
+    "signIn": "Log masuk",
+    "signingIn": "Sedang log masuk...",
+    "invalidCredentials": "Emel atau kata laluan tidak sah",
+    "setPassword": "Tetapkan kata laluan",
+    "passwordMinLength": "Minimum 10 aksara",
+    "sessionExpired": "Sesi anda telah tamat. Sila log masuk semula.",
+    "unauthorizedTitle": "Tiada akses",
+    "unauthorizedBody": "Akaun anda tidak mempunyai akses ke aplikasi ini."
+  },
+  "orders": {
+    "title": "Pesanan",
+    "newOrderChime": "Loceng pesanan baru",
+    "muted": "Senyap",
+    "unmuted": "Aktif",
+    "filterByStatus": "Status",
+    "filterByGame": "Permainan",
+    "filterBySupplier": "Pembekal",
+    "statusBadge": {
+      "open": "Sedia diproses",
+      "processing": "Sedang diproses",
+      "done": "Selesai",
+      "error": "Ralat",
+      "closed": "Ditutup",
+      "refund": "Bayaran balik"
+    },
+    "kpi": {
+      "salesCount": "Jualan hari ini",
+      "profit": "Untung hari ini",
+      "doneRatio": "Nisbah selesai"
+    },
+    "actions": {
+      "process": "Proses",
+      "done": "Tandakan siap",
+      "edit": "Sunting",
+      "reject": "Tolak",
+      "archive": "Arkib",
+      "archiveAll": "Arkib semua",
+      "showReceipt": "Papar resit",
+      "hideReceipt": "Sembunyi resit",
+      "copyOrderId": "Salin ID pesanan"
+    },
+    "edit": {
+      "gameId": "ID permainan",
+      "buyAmount": "Jumlah beli",
+      "paidAmount": "Jumlah dibayar",
+      "remark": "Catatan",
+      "status": "Status",
+      "confirmEditDone": "Pesanan ini telah selesai. Sunting juga?"
+    }
+  },
+  "customer": {
+    "form": {
+      "title": "Tempah top-up",
+      "subtitle": "Sila lengkapkan borang untuk menempah.",
+      "selectGame": "Pilih permainan",
+      "fullname": "Nama anda",
+      "gameId": "ID permainan",
+      "buyAmount": "Jumlah untuk dibeli",
+      "paidAmount": "Jumlah dibayar (RM)",
+      "receipt": "Gambar bukti bayaran",
+      "receiptHelper": "JPG / PNG tidak lebih daripada 4 MB",
+      "submit": "Hantar pesanan",
+      "submitting": "Sedang menghantar..."
+    },
+    "errors": {
+      "receiptTooLarge": "Saiz resit tidak boleh melebihi 4 MB.",
+      "requiredFields": "Sila lengkapkan setiap ruangan diperlukan.",
+      "submitFailed": "Pesanan anda gagal dihantar. Sila pastikan maklumat anda betul.",
+      "noReceipt": "Sila muat naik bukti bayaran, atau hantar kepada kami melalui Messenger."
+    },
+    "success": {
+      "title": "Pesanan berjaya dihantar",
+      "body": "Kami telah menerima pesanan anda. Pengesahan akan dihantar apabila pesanan siap.",
+      "orderId": "ID pesanan",
+      "trackOnMessenger": "Jejak di Messenger"
+    },
+    "expired": {
+      "title": "Pautan ini telah tamat",
+      "body": "Sila minta pautan baru daripada bot Messenger kami.",
+      "messengerCta": "Buka Messenger"
+    }
+  },
+  "admin": {
+    "title": "Admin",
+    "sections": {
+      "games": "Permainan",
+      "suppliers": "Pembekal",
+      "products": "Produk & Harga",
+      "stock": "Stok",
+      "announcements": "Pengumuman pembayaran",
+      "externalUrls": "Pautan luar",
+      "manualOrder": "Pesanan manual",
+      "users": "Pengguna"
+    },
+    "products": {
+      "filterGame": "Permainan",
+      "filterSupplier": "Pembekal",
+      "tableView": "Jadual",
+      "jsonView": "JSON",
+      "saveChanges": "Simpan perubahan",
+      "unsavedWarning": "Anda mempunyai perubahan yang belum disimpan.",
+      "diffTitle": "Perubahan yang akan dilaksanakan"
+    },
+    "users": {
+      "invite": "Jemput pengguna",
+      "role": "Peranan",
+      "status": "Status",
+      "lastLogin": "Log masuk terakhir",
+      "copyLink": "Salin pautan jemputan"
+    }
+  },
+  "reports": {
+    "title": "Laporan",
+    "filters": {
+      "from": "Dari",
+      "to": "Hingga",
+      "game": "Permainan",
+      "supplier": "Pembekal",
+      "apply": "Gunakan"
+    },
+    "download": {
+      "summary": "Muat turun ringkasan CSV",
+      "orders": "Muat turun pesanan CSV"
+    },
+    "kpi": {
+      "salesCount": "Jumlah jualan",
+      "income": "Jumlah pendapatan",
+      "cost": "Jumlah kos",
+      "profit": "Jumlah untung",
+      "doneRatio": "Nisbah selesai"
+    }
+  }
+}

@@ -1,0 +1,94 @@
+name: jomini-bms
+region: sgp
+services:
+  - name: web
+    environment_slug: node-js
+    github:
+      repo: YOUR_ORG/jomini-bms
+      branch: main
+      deploy_on_push: true
+    build_command: npm ci && npm run build
+    run_command: npm start
+    http_port: 3000
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 30
+      period_seconds: 15
+      failure_threshold: 3
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_OPTIONS
+        scope: RUN_TIME
+        value: --max-old-space-size=384
+      - key: DATABASE_URL
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: DATABASE_POOL_MAX
+        value: '4'
+      - key: NUXT_PUBLIC_APP_URL
+        scope: RUN_AND_BUILD_TIME
+      - key: NUXT_PUBLIC_SUPABASE_URL
+        scope: RUN_AND_BUILD_TIME
+      - key: NUXT_PUBLIC_SUPABASE_ANON_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: JWT_ACCESS_SECRET
+        scope: RUN_TIME
+        type: SECRET
+      - key: JWT_REFRESH_SECRET
+        scope: RUN_TIME
+        type: SECRET
+      - key: JWT_ACCESS_TTL
+        value: '900'
+      - key: JWT_REFRESH_TTL
+        value: '2592000'
+      - key: COOKIE_DOMAIN
+        scope: RUN_TIME
+      - key: CUSTOM_AUTH_TOKEN
+        scope: RUN_TIME
+        type: SECRET
+      - key: TELEGRAM_BOT_TOKEN
+        scope: RUN_TIME
+        type: SECRET
+      - key: TELEGRAM_INTERNAL_GROUP_ID
+        scope: RUN_TIME
+      - key: TELEGRAM_SUPPLIER_BSG_GROUP_ID
+        scope: RUN_TIME
+      - key: TELEGRAM_SUPPLIER_NICK_GROUP_ID
+        scope: RUN_TIME
+      - key: TELEGRAM_WEBHOOK_TOKEN
+        scope: RUN_TIME
+        type: SECRET
+      - key: TELEGRAM_BUTTON_URL
+        scope: RUN_TIME
+      - key: FLOWXO_CALLBACK_URL
+        scope: RUN_TIME
+        type: SECRET
+      - key: DEFAULT_TZ
+        value: Asia/Kuala_Lumpur
+      - key: LOG_LEVEL
+        value: info
+      - key: SUPPLIER_API_POLL_INTERVAL_MS
+        value: '30000'
+jobs:
+  - name: migrate
+    kind: PRE_DEPLOY
+    environment_slug: node-js
+    instance_size_slug: basic-xxs
+    github:
+      repo: YOUR_ORG/jomini-bms
+      branch: main
+    build_command: npm ci --ignore-scripts
+    run_command: npm run db:migrate
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        scope: RUN_TIME
+        type: SECRET

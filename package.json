@@ -1,0 +1,89 @@
+{
+  "name": "jomini-bms",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "start": "node .output/server/index.mjs",
+    "preview": "nuxt preview",
+    "generate": "nuxt generate",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "nuxt typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx server/db/migrate.ts",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:migrate-legacy": "tsx scripts/migrate-legacy.ts",
+    "db:bootstrap": "tsx scripts/bootstrap.ts",
+    "db:rename-for-cutover": "tsx scripts/rename-for-cutover.ts",
+    "telegram:set-webhook": "tsx scripts/set-telegram-webhook.ts",
+    "prepare": "husky || true"
+  },
+  "dependencies": {
+    "@nuxtjs/i18n": "^9.5.3",
+    "@pinia/nuxt": "^0.9.0",
+    "@supabase/supabase-js": "^2.103.3",
+    "@vueuse/core": "^12.3.0",
+    "@vueuse/nuxt": "^12.3.0",
+    "argon2": "^0.41.1",
+    "autoprefixer": "^10.5.0",
+    "chart.js": "^4.4.7",
+    "csv-stringify": "^6.5.2",
+    "dayjs": "^1.11.13",
+    "dompurify": "^3.2.3",
+    "drizzle-orm": "^0.38.3",
+    "jose": "^5.9.6",
+    "lucide-vue-next": "^0.468.0",
+    "marked": "^15.0.4",
+    "monaco-editor": "^0.52.2",
+    "nanoid": "^5.0.9",
+    "nuxt": "^3.15.0",
+    "pg": "^8.13.1",
+    "pinia": "^2.3.0",
+    "pino": "^9.6.0",
+    "postgres": "^3.4.5",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss": "^3.4.19",
+    "tsx": "^4.21.0",
+    "vue": "^3.5.13",
+    "vue-chartjs": "^5.3.2",
+    "vue-router": "^4.5.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^0.7.4",
+    "@nuxt/test-utils": "^3.15.1",
+    "@types/dompurify": "^3.2.0",
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.11.10",
+    "dotenv": "^17.4.2",
+    "drizzle-kit": "^0.30.1",
+    "eslint": "^9.17.0",
+    "fast-check": "^3.23.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "pino-pretty": "^13.0.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "vitest": "^3.2.0",
+    "vue-tsc": "^2.2.0"
+  },
+  "lint-staged": {
+    "*.{ts,vue,js}": [
+      "eslint --fix"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "back": "Back",
+    "submit": "Submit",
+    "search": "Search",
+    "close": "Close"
+  },
+  "nav": {
+    "orders": "Orders",
+    "reports": "Reports",
+    "admin": "Admin",
+    "account": "Account",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": "Log in",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "invalidCredentials": "Invalid email or password",
+    "setPassword": "Set your password",
+    "passwordMinLength": "Minimum 10 characters",
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "unauthorizedTitle": "Unauthorized",
+    "unauthorizedBody": "Your account does not have access to this application."
+  },
+  "orders": {
+    "title": "Orders",
+    "newOrderChime": "New order chime",
+    "muted": "Muted",
+    "unmuted": "Unmuted",
+    "filterByStatus": "Status",
+    "filterByGame": "Game",
+    "filterBySupplier": "Supplier",
+    "statusBadge": {
+      "open": "Ready to process",
+      "processing": "Processing",
+      "done": "Done",
+      "error": "Error",
+      "closed": "Closed",
+      "refund": "Refund"
+    },
+    "kpi": {
+      "salesCount": "Today's sales",
+      "profit": "Today's profit",
+      "doneRatio": "Processed ratio"
+    },
+    "actions": {
+      "process": "Process",
+      "done": "Mark done",
+      "edit": "Edit",
+      "reject": "Reject",
+      "archive": "Archive",
+      "archiveAll": "Archive all",
+      "showReceipt": "Show receipt",
+      "hideReceipt": "Hide receipt",
+      "copyOrderId": "Copy order ID"
+    },
+    "edit": {
+      "gameId": "Game ID",
+      "buyAmount": "Buy amount",
+      "paidAmount": "Paid amount",
+      "remark": "Remark",
+      "status": "Status",
+      "confirmEditDone": "This order is already done. Edit anyway?"
+    }
+  },
+  "customer": {
+    "form": {
+      "title": "Order top-up",
+      "subtitle": "Complete the form to place your order.",
+      "selectGame": "Select game",
+      "fullname": "Your name",
+      "gameId": "Game ID",
+      "buyAmount": "Amount to buy",
+      "paidAmount": "Amount paid (RM)",
+      "receipt": "Payment screenshot",
+      "receiptHelper": "JPG / PNG up to 4 MB",
+      "submit": "Submit order",
+      "submitting": "Submitting..."
+    },
+    "errors": {
+      "receiptTooLarge": "Receipt must be 4 MB or smaller.",
+      "requiredFields": "Please fill in every required field.",
+      "submitFailed": "Could not submit order. Please check your details and try again.",
+      "noReceipt": "Please upload a payment screenshot, or send it to us via Messenger."
+    },
+    "success": {
+      "title": "Order submitted",
+      "body": "We have received your order. A confirmation will be sent once it's processed.",
+      "orderId": "Order ID",
+      "trackOnMessenger": "Track on Messenger"
+    },
+    "expired": {
+      "title": "This link has expired",
+      "body": "Please request a new link from our Messenger bot.",
+      "messengerCta": "Open Messenger"
+    }
+  },
+  "admin": {
+    "title": "Admin",
+    "sections": {
+      "games": "Games",
+      "suppliers": "Suppliers",
+      "products": "Products & Pricing",
+      "stock": "Stock",
+      "announcements": "Payment announcement",
+      "externalUrls": "External URLs",
+      "manualOrder": "Manual order",
+      "users": "Users"
+    },
+    "products": {
+      "filterGame": "Game",
+      "filterSupplier": "Supplier",
+      "tableView": "Table",
+      "jsonView": "JSON",
+      "saveChanges": "Save changes",
+      "unsavedWarning": "You have unsaved changes.",
+      "diffTitle": "Changes to be applied"
+    },
+    "users": {
+      "invite": "Invite user",
+      "role": "Role",
+      "status": "Status",
+      "lastLogin": "Last login",
+      "copyLink": "Copy invite link"
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "filters": {
+      "from": "From",
+      "to": "To",
+      "game": "Game",
+      "supplier": "Supplier",
+      "apply": "Apply"
+    },
+    "download": {
+      "summary": "Download summary CSV",
+      "orders": "Download orders CSV"
+    },
+    "kpi": {
+      "salesCount": "Total sales",
+      "income": "Total income",
+      "cost": "Total cost",
+      "profit": "Total profit",
+      "doneRatio": "Done ratio"
+    }
+  }
+}
