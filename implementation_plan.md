@@ -338,64 +338,11 @@ jomini-bms/
 
 ---
 
-## 6. Environment Variables
-
-`.env.example` must contain every key below with placeholder values. Never commit real `.env`.
-
-```env
-NODE_ENV=development
-NUXT_PUBLIC_APP_URL=http://localhost:3000
-NUXT_PUBLIC_SUPABASE_URL=http://localhost:54321
-NUXT_PUBLIC_SUPABASE_ANON_KEY=...
-
-# server-only (no NUXT_PUBLIC_ prefix)
-DATABASE_URL=postgres://postgres:postgres@localhost:5432/jomini
-SUPABASE_SERVICE_ROLE_KEY=...
-
-# auth
-JWT_ACCESS_SECRET=change-me-32-bytes-min
-JWT_REFRESH_SECRET=change-me-32-bytes-min
-JWT_ACCESS_TTL=900            # 15 minutes
-JWT_REFRESH_TTL=2592000       # 30 days
-COOKIE_DOMAIN=localhost
-
-# external contract
-CUSTOM_AUTH_TOKEN=hE7Dujd"%5E'0Wl~'zl9#0ex#|$D10daad9{>1;b:X=c1qUtc4DuYsgFd{cFjj6
-
-# telegram
-TELEGRAM_BOT_TOKEN=...
-TELEGRAM_INTERNAL_GROUP_ID=-1001494640071
-TELEGRAM_SUPPLIER_BSG_GROUP_ID=-1001172301079
-TELEGRAM_SUPPLIER_NICK_GROUP_ID=-4663602157
-TELEGRAM_WEBHOOK_TOKEN=zIFtNp3Aa5PcHcQwWcmETe1PfZEuoABA
-TELEGRAM_BUTTON_URL=https://bms.jominigaming.com
-
-# flowxo
-FLOWXO_CALLBACK_URL=https://flowxo.com/hooks/a/z9w7e4g5
-
-# supplier api integrations
-# naming convention: SUPPLIER_<UPPER_KEY>_*. supplier.api_config stores only the
-# *names* of the env vars to read; secrets never sit in the database.
-SUPPLIER_NICK_API_BASE_URL=https://api.quinngamingshop.com
-SUPPLIER_NICK_API_KEY=APIAS5GY61757172776999
-SUPPLIER_STATUS_POLL_INTERVAL_SECONDS=60
-SUPPLIER_DISPATCH_MAX_RETRIES=1
-SUPPLIER_DISPATCH_TIMEOUT_MS=15000
-
-# misc
-DEFAULT_TZ=Asia/Kuala_Lumpur
-LOG_LEVEL=info
-```
-
-Runtime config is exposed via `nuxt.config.ts > runtimeConfig`, with `public` for client-safe values and the rest server-only.
-
----
-
-## 7. Database Schema (Postgres, Drizzle)
+## 6. Database Schema (Postgres, Drizzle)
 
 All tables use `snake_case`. Timestamps are `timestamptz`. PKs are noted below. All migrations are generated via `pnpm drizzle-kit generate` and applied via `pnpm drizzle-kit migrate` on boot + a CI step.
 
-### 7.1 `game`
+### 6.1 `game`
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -408,7 +355,7 @@ All tables use `snake_case`. Timestamps are `timestamptz`. PKs are noted below. 
 | `sort_order` | int default 0 | |
 | `created_at`, `updated_at` | timestamptz | |
 
-### 7.2 `supplier`
+### 6.2 `supplier`
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -425,7 +372,7 @@ All tables use `snake_case`. Timestamps are `timestamptz`. PKs are noted below. 
 
 Constraint: a `CHECK` ensures `adapter_key IS NOT NULL` when `relay_channel='http_api'`.
 
-### 7.3 `supplier_game` (junction)
+### 6.3 `supplier_game` (junction)
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -435,7 +382,7 @@ Constraint: a `CHECK` ensures `adapter_key IS NOT NULL` when `relay_channel='htt
 | `is_default` | bool default false | marks the preferred supplier for a game when none specified on the order |
 | **PK** | composite (`supplier_key`, `game_key`) | |
 
-### 7.4 `product` (pricing catalog)
+### 6.4 `product` (pricing catalog)
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -455,7 +402,7 @@ Constraint: a `CHECK` ensures `adapter_key IS NOT NULL` when `relay_channel='htt
 | `created_at`, `updated_at` | timestamptz | |
 | Unique index | `(game_key, supplier_key, name, amount)` | |
 
-### 7.5 `stock`
+### 6.5 `stock`
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -467,7 +414,7 @@ Constraint: a `CHECK` ensures `adapter_key IS NOT NULL` when `relay_channel='htt
 | `custom` | jsonb default `{}` | |
 | `updated_at` | timestamptz | |
 
-### 7.6 `order`
+### 6.6 `order`
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -512,7 +459,7 @@ Indexes:
 - `order_game_supplier_idx` on `(game_key, supplier_key)` (reports).
 - `order_fullname_idx`, `order_game_id_idx` — used for prev-order counts.
 
-### 7.7 `external_link`
+### 6.7 `external_link`
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -528,7 +475,7 @@ Indexes:
 | `remark` | text nullable | |
 | `custom_data` | jsonb default `{}` | |
 
-### 7.8 `config`
+### 6.8 `config`
 
 Key-value JSON blobs.
 
@@ -540,7 +487,7 @@ Key-value JSON blobs.
 
 Seeded keys: `payment_announcement` (`{ show: bool, message: string }`).
 
-### 7.9 `user`
+### 6.9 `user`
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -556,7 +503,7 @@ Seeded keys: `payment_announcement` (`{ show: bool, message: string }`).
 | `last_login_at` | timestamptz nullable | |
 | `created_at`, `updated_at` | timestamptz | |
 
-### 7.10 `refresh_token`
+### 6.10 `refresh_token`
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -569,11 +516,11 @@ Seeded keys: `payment_announcement` (`{ show: bool, message: string }`).
 | `revoked_at` | timestamptz nullable | |
 | `expires_at` | timestamptz not null | |
 
-### 7.11 Optional: `order_lock` (only if we don't use pg advisory locks)
+### 6.11 Optional: `order_lock` (only if we don't use pg advisory locks)
 
 We will use `pg_advisory_xact_lock` keyed by `hashtext(order_id)` inside a transaction. **No extra table needed.** See §19.
 
-### 7.12 `data_migration`
+### 6.12 `data_migration`
 
 Tracks one-off, data-layer migration scripts (anything living under `scripts/migrations/`) so they can be re-run safely on every deployment without re-applying the same script twice. Drizzle's own `__drizzle_migrations` table handles schema; this table handles **data** (backfills, legacy imports, one-off corrections). See §22 + §23.1.
 
@@ -588,7 +535,7 @@ Tracks one-off, data-layer migration scripts (anything living under `scripts/mig
 
 ---
 
-## 8. Supabase Realtime
+## 7. Supabase Realtime
 
 - Enable Postgres Changes on the `order` table: `ALTER PUBLICATION supabase_realtime ADD TABLE "order";` (done in a migration).
 - Enable RLS on `order` with policy `SELECT` allowed for authenticated role; **all writes are blocked from the client** — they go through Nitro routes.
@@ -608,7 +555,7 @@ export function useOrdersRealtime(): {
 
 ---
 
-## 9. Authentication (custom JWT)
+## 8. Authentication (custom JWT)
 
 ### Flow
 
@@ -651,7 +598,7 @@ Everything else is authed. `admin-only.ts` middleware guards admin-specific page
 
 ---
 
-## 10. External API Contracts (LOCKED)
+## 9. External API Contracts (LOCKED)
 
 These routes live at `server/api/order/create.post.ts` and `server/api/stock-status.get.ts` but are also surfaced at **the same public URL paths without `/api`** via a Nitro route rewrite (`routeRules`) so FlowXO's `POST /order/create` and `GET /stock_status` keep working unchanged.
 
@@ -663,7 +610,7 @@ routeRules: {
 }
 ```
 
-### 10.1 `POST /order/create`
+### 9.1 `POST /order/create`
 
 Headers: `Content-Type: application/json`, `CustomAuth: <CUSTOM_AUTH_TOKEN>`.
 
@@ -699,7 +646,7 @@ Body (exact field names and types — do not change):
 
 The `data` object must contain these legacy-shaped fields (even when values are synthesised): `id, createdAt, doneAt, processAt, userId, ign, fullname, gender, phone, email, game, gameId, buyAmount, paidAmount, costPrice, profit, receiptUrl, processSuccessful, processPending, processFailed, processStatus, supplier, lastProcessBy, processMethod, remark, source, amountCombinationString, responsePath, telegramOrderMsgId, channel, language, prevOrderCount, prevOrderIdCount`. Columns we dropped (`priceModifier`, `invoiceId`, `paymentStatus`, `enablePaymentGateway`, `checkUrls`) are emitted as empty defaults (`0`, `""`, `false`, `[]`) so downstream bots don't crash on missing keys. Helper: `server/utils/externalEnvelope.ts`.
 
-### 10.2 `GET /stock_status?game=<key>`
+### 9.2 `GET /stock_status?game=<key>`
 
 Headers: `CustomAuth: <CUSTOM_AUTH_TOKEN>`.
 
@@ -727,19 +674,19 @@ Returns:
 - 404 `{ message: 'Status not found' }` if no row.
 - Implementation in `server/services/stock/stockStatus.ts` derives `outOfStock`, `restockAtString`, `currentDateTime`, `stockMessage` (exact strings — copy verbatim from legacy `routes/config.ts`).
 
-### 10.3 CustomAuth header only
+### 9.3 CustomAuth header only
 
 For these two routes, `CustomAuth: <token>` is the **only** accepted credential. JWT cookies are ignored here.
 
 ---
 
-## 11. Order Domain
+## 10. Order Domain
 
-### 11.1 Statuses
+### 10.1 Statuses
 
 `open → processing → done | error | closed | refund`. `closed` and `refund` are terminal. Implemented as a TypeScript union, not a Postgres enum (matches legacy writes and lets admins fix odd rows).
 
-### 11.2 Create pipeline (`server/services/order/createOrder.ts`)
+### 10.2 Create pipeline (`server/services/order/createOrder.ts`)
 
 1. `parseAmount(buyAmount)` and `parseAmount(paidAmount)` → floats.
 2. `resolveGameId(rawId, gameKey)` → split via regex rules stored on `game.game_id_format`.
@@ -750,7 +697,7 @@ For these two routes, `CustomAuth: <token>` is the **only** accepted credential.
 7. `INSERT INTO order`. Supabase Realtime broadcasts the change to the dashboard.
 8. Fire `notifyOrderCreated(order)` → Telegram internal group (non-blocking, wrapped in try/catch).
 
-### 11.3 Process pipeline (`server/services/order/processOrder.ts`)
+### 10.3 Process pipeline (`server/services/order/processOrder.ts`)
 
 1. Acquire DB lock keyed to `order.id` (see §19). On contention: return 409 with `{ status: 'duplicate_processing' }` and post a Telegram warning (preserved behaviour).
 2. Re-read the order; if `process_status not in (open, error)` → reject (unchanged legacy rule; Smile.one special case removed since automation is gone).
@@ -764,7 +711,7 @@ For these two routes, `CustomAuth: <token>` is the **only** accepted credential.
    - `http_api` adapter (e.g. `nick` → `quinngamingshop`) → one `dispatch` call per denomination split, each returning an `externalOrderId` + initial status. Entries are written to `process_pending[]`. Order stays `processing` until the status poller (§17.6) or the supplier's callback resolves every split.
 8. Release the DB lock.
 
-### 11.4 Supplier dispatch adapters
+### 10.4 Supplier dispatch adapters
 
 All outbound supplier hand-offs (Telegram relay, HTTP API automation, or fully manual) go through a single registry at `server/services/supplier/adapters/registry.ts`. The generic `supplier/relay.ts` dispatcher:
 
@@ -781,7 +728,7 @@ Adding a new supplier with a custom HTTP API is therefore a five-step exercise w
 4. Add `SUPPLIER_<KEY>_*` env vars to `.env.example`, `nuxt.config.ts > runtimeConfig`, and deployment secrets.
 5. Populate `product.supplier_sku` for that supplier via the bulk editor (§13.3).
 
-#### 11.4.1 Adapter contract
+#### 10.4.1 Adapter contract
 
 ```ts
 export type RelayChannel = 'telegram' | 'manual' | 'http_api'
@@ -845,7 +792,7 @@ interface AdapterBalance { currency: string; amount: number }
 interface AdapterService { id: string; name: string; category?: string; price?: number; status?: string }
 ```
 
-#### 11.4.2 Built-in adapters
+#### 10.4.2 Built-in adapters
 
 | Key | `relay_channel` | Poll? | Notes |
 | --- | --- | --- | --- |
@@ -853,7 +800,7 @@ interface AdapterService { id: string; name: string; category?: string; price?: 
 | `manual` | `manual` | no | `dispatch` is a no-op. Operators resolve from the UI. |
 | `quinngamingshop` | `http_api` | yes | nick's adapter. Supports polling, balance, service listing (§11.4.3). |
 
-#### 11.4.3 `quinngamingshop` adapter (supplier `nick`)
+#### 10.4.3 `quinngamingshop` adapter (supplier `nick`)
 
 Vendor documentation: <https://docs.quinngamingshop.com/>. Base URL `https://api.quinngamingshop.com`. All endpoints are `POST application/json`; the vendor authenticates on `api_key` in the body **and** IP whitelisting (deployment IP must be registered via the vendor dashboard — see §23).
 
@@ -895,7 +842,7 @@ Vendor documentation: <https://docs.quinngamingshop.com/>. Base URL `https://api
 - Duplicate dispatch protection: `idtrx` is deterministic (`<orderId>-<splitIndex>`), so retrying an interrupted dispatch is safe.
 - The webhook endpoint at `/api/webhook/supplier/nick` is wired up but treated as *advisory only* until the vendor publishes a callback schema; polling (§17.6) is the source of truth.
 
-#### 11.4.4 Admin UI hooks
+#### 10.4.4 Admin UI hooks
 
 The `/admin/suppliers` page (§14 / §13.1) gains, per supplier row:
 
@@ -904,35 +851,35 @@ The `/admin/suppliers` page (§14 / §13.1) gains, per supplier row:
 - A **Test connection** button (admin only) that calls `getBalance` / `listServices` through a server-side endpoint to confirm the credentials resolve and the vendor is reachable.
 - An **Import services** action that calls `listServices` and drops the result into the `product` bulk editor as a starting point.
 
-### 11.5 Supplier outcome (`server/services/supplier/markOutcome.ts`)
+### 10.5 Supplier outcome (`server/services/supplier/markOutcome.ts`)
 
 Invoked from three surfaces: (a) the operator UI done/error buttons, (b) the Telegram webhook `/d`, `/f` commands (for `telegram` suppliers), (c) the supplier status poller / callback for `http_api` suppliers (§17.6). All three converge on the same resolution semantics so downstream behaviour (FlowXO scenarios, review nudge, dashboard transitions) is identical regardless of relay channel.
 
 - Success (`/d <orderId>` or adapter reports `success`) → transition to `done`, set `done_at`, fire `notifyCustomerScenario('ORDER_DONE')`, enqueue delayed `WRITE_REVIEW` (2-hour `setTimeout` equivalent — implemented as a scheduled row in a `pending_notification` table is overkill; use a **delayed Nitro plugin task** keyed to `done_at + 2h` checked by a 5-minute cron tick — see §17.3). For `http_api` suppliers the transition only fires once **every** `process_pending[]` entry has resolved successfully.
 - Failure (`/f <orderId> <reason>` or adapter reports `failed` / `cancel` / `refund`) → transition to `error`, push `{ splitIndex?, amount, reason, externalOrderId? }` into `process_failed`, fire `notifyOrderError`. If reason contains `"Wrong game ID"` (case-insensitive) → additionally fire `WRONG_ID` customer notification. A partial failure (some splits succeeded, others failed) leaves the order in `error` with both `process_successful[]` and `process_failed[]` populated — operators can retry or refund the failed splits from the UI.
 
-### 11.6 Edit / reject / archive / done / archive_all
+### 10.6 Edit / reject / archive / done / archive_all
 
 One-to-one with legacy endpoints but writing directly to Postgres (no Firestore mirror). Supabase Realtime picks up the change and pushes to connected clients.
 
-### 11.7 Public customer submission (`POST /order/create-external`)
+### 10.7 Public customer submission (`POST /order/create-external`)
 
 - Multipart: `externalId, game, fullname, gameId, buyAmount, paidAmount, receiptFile`.
 - Validate `externalId` against `external_link`: not expired, within `max_access_count`, within `active_duration_ms`. Increment `access_count`.
 - Upload `receiptFile` to Supabase Storage bucket `receipts/<orderId>/<filename>.jpeg` (public-read). Max 4 MB enforced server-side as well.
 - Delegate to `createOrder` with `source='jg_external_url'`, `channel='web'`.
 
-### 11.8 `POST /url/create_external` and `POST /url/verify_external`
+### 10.8 `POST /url/create_external` and `POST /url/verify_external`
 
 Same contract as legacy (used by internal admin and customer page).
 
 ---
 
-## 12. Denomination Split Engine (massively improved)
+## 11. Denomination Split Engine (massively improved)
 
 File: `server/services/denomination/splitEngine.ts`.
 
-### 12.1 Goals beyond legacy greedy
+### 11.1 Goals beyond legacy greedy
 
 1. Multiple strategies, selectable per `(game_key, supplier_key)` via config.
 2. Admin-editable manual overrides (e.g. MLBB 344 = 172×2, 516 = 172×3, 1050, 1222, 2539) expressed declaratively, not hard-coded.
@@ -942,7 +889,7 @@ File: `server/services/denomination/splitEngine.ts`.
 6. Clear remainder reporting with reason codes (`no_denominator_covers_amount`, `smallest_denominator_too_big`, `strategy_failed`).
 7. Full unit test coverage with golden tables per game.
 
-### 12.2 Strategies
+### 11.2 Strategies
 
 ```ts
 type SplitStrategy =
@@ -954,7 +901,7 @@ type SplitStrategy =
 
 Default: `greedy_largest_first` for all supplier×game pairs initially (parity with legacy). Admins can change per-pair via `supplier_game.metadata.splitStrategy`.
 
-### 12.3 Manual overrides (replaces hard-coded MLBB customDenominator)
+### 11.3 Manual overrides (replaces hard-coded MLBB customDenominator)
 
 Stored in `product.metadata.splitOverride` on the base-amount row, e.g. on the `mlbb / smile_one / diamond / 172` row:
 
@@ -964,7 +911,7 @@ Stored in `product.metadata.splitOverride` on the base-amount row, e.g. on the `
 
 Engine preprocesses these into a lookup map at call time.
 
-### 12.4 API
+### 11.4 API
 
 ```ts
 export function runDenominationSplit(input: {
@@ -983,27 +930,27 @@ export function runDenominationSplit(input: {
 }
 ```
 
-### 12.5 Unit tests
+### 11.5 Unit tests
 
 - Golden cases per game×supplier, including edge cases (0, one base amount, oversized amount, amounts solved only via override).
 - Property tests (`fast-check`): given a randomly generated denominator set + amount, assert `totalCost == sum(splits.cost)` and `combinationString` reconstructs `amount + remainder`.
 
-### 12.6 UI hook
+### 11.6 UI hook
 
 Composable `useDenominationPreview.ts` calls `GET /api/denomination/preview?gameKey=&supplierKey=&amount=` to render the preview before save/process. Backing endpoint in `server/api/denomination/preview.get.ts`.
 
 ---
 
-## 13. Games & Suppliers (dynamic, admin-managed)
+## 12. Games & Suppliers (dynamic, admin-managed)
 
-### 13.1 Pages
+### 12.1 Pages
 
 - `/admin/games` — CRUD games. Inline row editing plus a Monaco JSON editor for bulk edit.
 - `/admin/suppliers` — CRUD suppliers, including supplier×game matrix (checkboxes per game, plus default flag).
 - `/admin/products` — the primary bulk editor. See §13.3.
 - `/admin/stock` — per-game stock row editor (legacy was MLBB-only; revamp covers every enabled game).
 
-### 13.2 JSON Schemas for Monaco
+### 12.2 JSON Schemas for Monaco
 
 Exported from `server/services/games/schema.ts`:
 
@@ -1013,7 +960,7 @@ Exported from `server/services/games/schema.ts`:
 
 Monaco registers these schemas via `monaco.languages.json.jsonDefaults.setDiagnosticsOptions({ schemas: [...] })`. The editor surfaces inline validation, hover tooltips, and autocomplete for enum fields.
 
-### 13.3 `ProductsBulkEditor.vue`
+### 12.3 `ProductsBulkEditor.vue`
 
 Features:
 
@@ -1025,7 +972,7 @@ Features:
 - Save → `PUT /api/products` with the full filtered set; server diffs against DB and applies inserts/updates/soft-deletes in a single transaction.
 - Undo by reloading; unsaved changes warning via Pinia store + `onBeforeRouteLeave`.
 
-### 13.4 Server bulk upsert
+### 12.4 Server bulk upsert
 
 ```ts
 // server/services/games/bulkUpsert.ts
@@ -1038,15 +985,15 @@ export async function upsertProducts(filter: { gameKey?: string, supplierKey?: s
 
 ---
 
-## 14. Admin Panel (Revamp)
+## 13. Admin Panel (Revamp)
 
-### 14.1 Layout
+### 13.1 Layout
 
 - Left-side icon rail on desktop, bottom tab bar on mobile (replacing legacy fixed 65 px bottom bar).
 - Sections: **Orders**, **Reports**, **Admin** (games / suppliers / products / stock / announcements / users / manual order / external URLs).
 - Only role `admin` sees `Admin → users` and `Admin → games` + `suppliers` tabs. Operators see `products` / `stock` in read-only mode.
 
-### 14.2 Visual direction
+### 13.2 Visual direction
 
 - Tailwind + `tailwind-merge`. Light theme default; dark theme toggle in account menu.
 - Brand red `#d0252b` preserved as primary accent, pink `#ef767b` as secondary.
@@ -1054,24 +1001,24 @@ export async function upsertProducts(filter: { gameKey?: string, supplierKey?: s
 - Cards use 12 px radius, subtle 1 px border (`border-zinc-200 dark:border-zinc-800`), `shadow-sm`.
 - All interactive elements have focus rings and keyboard navigation.
 
-### 14.3 Manual order form (replaces legacy `/manage` manual section)
+### 13.3 Manual order form (replaces legacy `/manage` manual section)
 
 - Game and supplier selects populated from `games` and `supplier_game` tables (filtered by the chosen game).
 - Live denomination preview (§12.6).
 - Price hints: show computed `totalCost`, `totalSelling`, `profit` in real time.
 - Submits to internal `POST /api/order/create-internal` which wraps `createOrder` with `source='jg_internal_web'` and `channel='web'`.
 
-### 14.4 External URL creator
+### 13.4 External URL creator
 
 - Same fields as legacy (`game`, `username`, `remark`, `activeDuration` in minutes, `maxAccessCount`, `responsePath`) minus `enablePaymentGateway`.
 - Copy uses `navigator.clipboard.writeText`, not `execCommand`.
 
-### 14.5 Payment announcement form
+### 13.5 Payment announcement form
 
 - `show` toggle and `message` textarea, stored as `config.payment_announcement`.
 - Message supports markdown (rendered via `marked` + `DOMPurify` on the public page).
 
-### 14.6 Users section (admin-only)
+### 13.6 Users section (admin-only)
 
 - List users with `role`, `status`, `last_login_at`.
 - Invite by email → shows a copy-to-clipboard link.
@@ -1079,18 +1026,18 @@ export async function upsertProducts(filter: { gameKey?: string, supplierKey?: s
 
 ---
 
-## 15. Operator Order Dashboard (Revamp)
+## 14. Operator Order Dashboard (Revamp)
 
 File: `pages/orders/index.vue`. Composable: `useOrdersRealtime.ts`.
 
-### 15.1 Visuals
+### 14.1 Visuals
 
 - Top strip with 3 KPI cards: **Today's sales count**, **Today's profit (MYR)**, **Today's processing ratio** (processed / created). Sourced from `GET /api/reports/summary?window=today`.
 - Filter chips: status (`open`, `processing`, `error`, `done`, `closed`, `refund`), game, supplier, date range.
 - Sorted by `created_at desc`.
 - Each card is extracted into `components/order/OrderCard.vue` (shared with `/orders/[id].vue`).
 
-### 15.2 Card content
+### 14.2 Card content
 
 - Game background image from `game.icon_url` (or built-in fallback per game key).
 - Order id, fullname (with `prevOrderCount` badge), IGN, game id, buy amount, paid amount, cost, profit, source, channel, FlowXO livechat link.
@@ -1107,24 +1054,24 @@ File: `pages/orders/index.vue`. Composable: `useOrdersRealtime.ts`.
   - `Archive` requires double-click guard (preserved legacy behaviour).
   - `Edit` triggers an inline form (`OrderEditForm.vue`) with denomination preview.
 
-### 15.3 New-order chime
+### 14.3 New-order chime
 
 - `useOrdersRealtime.ts` exposes an `onInsert` callback.
 - Dashboard plays `assets/sounds/kaching.mp3` on `INSERT` events.
 - Muted by default on first visit; user toggles on and the preference persists in local storage.
 
-### 15.4 `/orders/[id].vue`
+### 14.4 `/orders/[id].vue`
 
 - Same card, full-screen.
 - Query param `?autoProcess=1` triggers `processOrder` automatically on mount if `process_status === 'open'` (replaces legacy `/auto_process`).
 
 ---
 
-## 16. Public Customer Order Form (Revamp)
+## 15. Public Customer Order Form (Revamp)
 
 File: `pages/external-order/[externalId].vue`, `components/customer/CustomerOrderForm.vue`.
 
-### 16.1 Goals
+### 15.1 Goals
 
 - Professional feel: hero with game cover, large inputs, mobile-first.
 - Bilingual (see §20).
@@ -1133,7 +1080,7 @@ File: `pages/external-order/[externalId].vue`, `components/customer/CustomerOrde
 - Success screen (`CustomerSuccessScreen.vue`) shows order id, estimated processing time, and a button "Track your order" that deep-links back to FlowXO.
 - Payment-announcement modal preserved (markdown-rendered).
 
-### 16.2 UX details
+### 15.2 UX details
 
 - Progress steps: **Select game → Enter details → Upload receipt → Submit**.
 - Game tiles (not a select) on step 1, with icons + currency hint.
@@ -1141,26 +1088,26 @@ File: `pages/external-order/[externalId].vue`, `components/customer/CustomerOrde
 - Loader: skeleton on verify call; a full-screen spinner only while submitting.
 - On expired / invalid link: branded "Link expired" page with a CTA to Messenger (`https://m.me/jominigaming`) in both languages.
 
-### 16.3 Server endpoint
+### 15.3 Server endpoint
 
 `POST /api/order/create-external` (implementation described in §11.7).
 
 ---
 
-## 17. Notifications
+## 16. Notifications
 
-### 17.1 Telegram outbound (`server/services/notify/telegram.ts`)
+### 16.1 Telegram outbound (`server/services/notify/telegram.ts`)
 
 - Function `sendTelegramMessage({ chatId, text, parseMode='HTML', replyMarkup? })`. Uses `fetch` to `https://api.telegram.org/bot<token>/sendMessage`.
 - Helper `sendSupplierRelay({ order })` builds the exact legacy-format message including `<pre>` tap-to-copy blocks and `@mentions` from `supplier.telegram_mentions`. Message text is copied verbatim from the legacy `telegram.ts sendOrderToSupplier` — preserved so supplier muscle memory (`/d`, `/f`) keeps working.
 - Inline keyboard (for internal group messages) includes a single button: "Open order" linking to `${TELEGRAM_BUTTON_URL}/orders/<id>?autoProcess=1`.
 
-### 17.2 FlowXO (`server/services/notify/flowxo.ts`)
+### 16.2 FlowXO (`server/services/notify/flowxo.ts`)
 
 - Function `sendFlowXOMessage({ responsePath, message, imageUrl?, orderId? })`. GETs `FLOWXO_CALLBACK_URL` with the query shape required by FlowXO.
 - Scenarios (`server/services/notify/scenarios.ts`): `ORDER_REJECT`, `ORDER_VERIFIED`, `ORDER_DONE`, `ORDER_SENT_SUPPLIER`, `WRONG_ID`, `WRITE_REVIEW`. Exact message copy is extracted verbatim from legacy `notify.ts` (BM + EN variants), using the order's `language` field to pick.
 
-### 17.3 Delayed WRITE_REVIEW
+### 16.3 Delayed WRITE_REVIEW
 
 - On transition to `done`, insert into `pending_notification (kind, order_id, due_at)`.
 - Nitro cron task every 5 min (`nitro.tasks`) picks rows where `due_at <= now() and sent_at is null`, sends, marks `sent_at`.
@@ -1177,13 +1124,13 @@ pending_notification (
 )
 ```
 
-### 17.4 Daily summaries
+### 16.4 Daily summaries
 
 - Two Nitro scheduled tasks (cron `0 0 * * *` MYT):
   - `dailySalesSummaryInternal` → `TELEGRAM_INTERNAL_GROUP_ID`. Uses `report.summary` service restricted to yesterday in `Asia/Kuala_Lumpur`.
   - `dailySalesSummarySuppliers` → iterates enabled suppliers with `telegram_group_id`, posts that supplier's yesterday rollup per game.
 
-### 17.5 Telegram webhook
+### 16.5 Telegram webhook
 
 - `POST /api/webhook/telegram?token=<TELEGRAM_WEBHOOK_TOKEN>` — rejects if token mismatches.
 - Matches `/d <orderId>` or `/f <orderId> <reason>` in messages from known supplier group ids.
@@ -1191,7 +1138,7 @@ pending_notification (
 - Always returns `{ status: 'successful' }` on any outcome (Telegram won't retry).
 - One-off script `scripts/set-telegram-webhook.ts` configures the bot webhook against the current host.
 
-### 17.6 Supplier status polling & callbacks
+### 16.6 Supplier status polling & callbacks
 
 Covers suppliers with `relay_channel='http_api'` (e.g. `nick`). Two independent resolution paths keep `process_pending[]` entries moving:
 
@@ -1220,9 +1167,9 @@ Covers suppliers with `relay_channel='http_api'` (e.g. `nick`). Two independent 
 
 ---
 
-## 18. Reports (in-app + CSV)
+## 17. Reports (in-app + CSV)
 
-### 18.1 Pages
+### 17.1 Pages
 
 - `/reports` — single-page dashboard with:
   - Header: date range + game + supplier filters (defaults: today, all games, all suppliers).
@@ -1232,7 +1179,7 @@ Covers suppliers with `relay_channel='http_api'` (e.g. `nick`). Two independent 
   - Per-supplier breakdown table.
   - "Download CSV" buttons, one for the summary, one for raw orders.
 
-### 18.2 Server endpoints
+### 17.2 Server endpoints
 
 - `GET /api/reports/summary?from=&to=&gameKey=&supplierKey=` → `{ kpis, daily: [...], byGame: [...], bySupplier: [...] }`.
 - `GET /api/reports/orders.csv?from=&to=&gameKey=&supplierKey=&status=` → streams CSV using `csv-stringify` with headers:
@@ -1243,13 +1190,13 @@ id,created_at,done_at,game,supplier,fullname,game_id,buy_amount,paid_amount,cost
 
 - All timestamps converted to `Asia/Kuala_Lumpur` before emission.
 
-### 18.3 Access
+### 17.3 Access
 
 - Report pages are operator+admin visible. CSV export is rate-limited (5 per minute per user) via a simple in-memory `Map` scoped to a single Nitro instance — acceptable for an admin-only feature.
 
 ---
 
-## 19. DB-backed Locks (replaces `persistent-store`)
+## 18. DB-backed Locks (replaces `persistent-store`)
 
 File: `server/services/lock/dbLock.ts`.
 
@@ -1270,7 +1217,7 @@ export async function withOrderLock<T>(orderId: string, fn: () => Promise<T>): P
 
 ---
 
-## 20. i18n
+## 19. i18n
 
 - Package: `@nuxtjs/i18n` v9.
 - Locales: `en` (English), `ms` (Bahasa Melayu). Default `ms` on customer pages, `en` on operator pages.
@@ -1281,7 +1228,7 @@ export async function withOrderLock<T>(orderId: string, fn: () => Promise<T>): P
 
 ---
 
-## 21. Logging & Observability
+## 20. Logging & Observability
 
 - `pino` logger initialised in `server/plugins/logger.ts`. Level from `LOG_LEVEL` env.
 - Nitro middleware `00.logger.ts` logs `{ requestId, method, url, status, durationMs, userId? }` per request.
@@ -1290,11 +1237,11 @@ export async function withOrderLock<T>(orderId: string, fn: () => Promise<T>): P
 
 ---
 
-## 22. Data Migrations (automatic, idempotent, deploy-driven)
+## 21. Data Migrations (automatic, idempotent, deploy-driven)
 
 Every data migration — the one-off legacy Postgres → v2 import, and any future backfills / corrections — lives under `scripts/migrations/` and is run automatically on **every** DigitalOcean deployment by the `migrate` job (see §23.1). Already-applied scripts are skipped via the `data_migration` table (§7.12); unapplied scripts run in filename order inside a single transaction each.
 
-### 22.0 Runner: `scripts/migrate.ts`
+### 21.0 Runner: `scripts/migrate.ts`
 
 Single entry point invoked by the deploy job. Responsibilities:
 
@@ -1325,12 +1272,12 @@ The runner also supports:
 - `pnpm migrate --only <id>` — force-run a specific script locally (still writes to `data_migration`).
 - `pnpm migrate --status` — prints a table of applied vs pending scripts (used by the CI preview step).
 
-### 22.1 Legacy import prereqs (`scripts/migrations/2026_04_19_import_legacy_orders.ts`)
+### 21.1 Legacy import prereqs (`scripts/migrations/2026_04_19_import_legacy_orders.ts`)
 
 - `LEGACY_DATABASE_URL` pointing at the existing DB (read-only credential). If the env var is absent at deploy time, the script logs `"LEGACY_DATABASE_URL not set — skipping legacy import"` and records itself as applied (so subsequent deploys don't retry); this lets the production DO app run without ever touching legacy data once cutover is complete.
 - Target DB has already run all v2 Drizzle migrations and been seeded with games/suppliers (see §22.3 for the seed list that guarantees FKs exist). The runner ordering (schema → seed → data migrations) guarantees this.
 
-### 22.2 Steps
+### 21.2 Steps
 
 1. **Games + suppliers + supplier_games + products** — seeded, not migrated (new structure). But copy legacy `product` rows where `status='active'` → new `product` table, remapping columns 1:1, keeping `amount, name, combination, cost, selling, supplier, status, game`. Legacy `supplier` strings (`smile_one`, `backstreet_gamer`, `nick`, `others`) become `supplier_key`; legacy `game` strings become `game_key`.
 2. **orders**: `SELECT * FROM "order"` streamed (use a cursor) into new `order` with column mapping:
@@ -1342,7 +1289,7 @@ The runner also supports:
 5. **config**: copy `payment_announcement`. **Do not** copy `smile_one_credentials` (not used).
 6. **user**: **do not migrate.** v2 starts with a fresh admin via seed. Operators are re-invited.
 
-### 22.3 Seed (`scripts/seed.ts`)
+### 21.3 Seed (`scripts/seed.ts`)
 
 - Creates games: `mlbb`, `pubg`, `wr`, `ff`, `genshin_impact`, `hok`, `unknown` (last one `enabled=false` for legacy data).
 - Creates suppliers with the correct dispatch channel:
@@ -1355,13 +1302,13 @@ The runner also supports:
 - Creates the first admin from `SEED_ADMIN_EMAIL` + `SEED_ADMIN_PASSWORD` env.
 - `payment_announcement` starts `{ show: false, message: '' }`.
 
-### 22.4 Dry-run + idempotency
+### 21.4 Dry-run + idempotency
 
 - Every script under `scripts/migrations/` must be internally idempotent (insert-if-missing by PK, `ON CONFLICT DO NOTHING` / `DO UPDATE` where appropriate) as a defence-in-depth measure, even though the runner already guards against re-applying via `data_migration`.
 - `pnpm migrate --dry-run` logs counts and writes nothing.
 - Running the deploy job twice is always safe: the second run produces zero writes and zero diff.
 
-### 22.5 Cutover procedure
+### 21.5 Cutover procedure
 
 1. Deploy v2 pointing at an empty DB. The `migrate` job runs automatically and performs schema migrations + seed + all pending data migrations (including the legacy import, if `LEGACY_DATABASE_URL` is wired up in DO secrets).
 2. Put legacy app in maintenance mode (disable FlowXO hook URL).
@@ -1373,9 +1320,9 @@ The runner also supports:
 
 ---
 
-## 23. Deployment (DigitalOcean App Platform)
+## 22. Deployment (DigitalOcean App Platform)
 
-### 23.1 `app.do.yaml`
+### 22.1 `app.do.yaml`
 
 - One `service` named `web`, HTTP port from Nuxt (`PORT`), Node 20, `pnpm install --frozen-lockfile && pnpm build`, `pnpm start` (= `node .output/server/index.mjs`).
 - One `job` named `migrate` with `kind: PRE_DEPLOY` that runs **`pnpm migrate`** (the unified runner in §22.0). This executes `drizzle-kit migrate` → seed ensure → every pending `scripts/migrations/*.ts` file, in that order, on **every** deployment. Already-applied data migrations are skipped via the `data_migration` table (§7.12), so the job is always safe to re-run and always current with the codebase.
@@ -1386,17 +1333,17 @@ The runner also supports:
 - Env vars: mirror `.env.example`; secrets marked `type: SECRET`. Include `DEPLOYMENT_ID` (auto-populated by DO) and optional `LEGACY_DATABASE_URL`.
 - At least 2 instances for multi-instance correctness (validates the DB-lock design).
 
-### 23.2 Supabase (self-hosted)
+### 22.2 Supabase (self-hosted)
 
 - Running on a separate DO droplet (or Managed DB + Realtime container).
 - Connection string consumed via `DATABASE_URL`.
 - Realtime configured to publish the `order` table; the Nuxt client uses `NUXT_PUBLIC_SUPABASE_URL` + `ANON_KEY`.
 
-### 23.3 CI/CD (GitHub Actions)
+### 22.3 CI/CD (GitHub Actions)
 
 Two workflow files under `.github/workflows/`. Both use Node 20 + pnpm with the built-in `actions/setup-node` cache.
 
-#### 23.3.1 `ci.yml` — pull-request gate
+#### 22.3.1 `ci.yml` — pull-request gate
 
 Triggers: `pull_request` against `main`, and `push` to any non-`main` branch.
 
@@ -1410,7 +1357,7 @@ Jobs (run in parallel where possible):
 
 Branch protection on `main` requires all five jobs to pass before merge.
 
-#### 23.3.2 `deploy.yml` — auto-deploy to DigitalOcean
+#### 22.3.2 `deploy.yml` — auto-deploy to DigitalOcean
 
 Triggers:
 
@@ -1456,12 +1403,12 @@ Required repository secrets:
 
 No other secrets live in the workflow — application runtime secrets (database URLs, JWT keys, Telegram tokens, supplier API keys) stay in DO App Platform's encrypted env vars and are never surfaced to GitHub.
 
-### 23.4 Rollback
+### 22.4 Rollback
 
 - DO App Platform keeps the last N deployments; rollback via `doctl apps update --from-deployment` or by re-running the previous successful workflow from the GitHub Actions UI (`workflow_dispatch` on the older commit).
 - Because the `migrate` job is idempotent and additive (schema migrations are never destructive without an explicit follow-up script), rolling back the app container does not require rolling back the DB — previous code versions continue to function against the newer schema.
 
-### 23.5 Supplier IP whitelisting
+### 22.5 Supplier IP whitelisting
 
 Some `http_api` suppliers require IP whitelisting in addition to API keys:
 
@@ -1470,7 +1417,7 @@ Some `http_api` suppliers require IP whitelisting in addition to API keys:
 
 ---
 
-## 24. Milestones & Task Breakdown
+## 23. Milestones & Task Breakdown
 
 Each milestone is an independently shippable checkpoint. An AI agent should complete them in order.
 
@@ -1574,7 +1521,7 @@ Each milestone is an independently shippable checkpoint. An AI agent should comp
 
 ---
 
-## 25. Open Assumptions (flag on review)
+## 24. Open Assumptions (flag on review)
 
 1. **`check_urls` dropped entirely.** If the owner wants manual receipt-SS uploads in v2, add an admin-side upload widget later; column will need to be re-added. Cost: small.
 2. **Supplier dispatch is pluggable.** Three channels ship on day one: `telegram` (legacy behaviour — `smile_one`, `backstreet_gamer`), `manual` (`others`), and `http_api` via the quinngamingshop adapter (`nick`). Adding another vendor is a single adapter module + config row (§11.4). Smile.one HTTP automation is not re-added but is mechanically easy to add later.
