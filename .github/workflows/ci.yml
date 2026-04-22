@@ -1,0 +1,156 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: ['**']
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
+
+  typecheck:
+    name: TypeCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: jomini_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/jomini_test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+```
+
+Now let me create the deploy workflow:
+
+```
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to DigitalOcean
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: TypeCheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Trigger deployment
+        id: deploy
+        run: |
+          DEPLOYMENT_JSON=$(doctl apps create-deployment "${{ secrets.DO_APP_ID }}" --wait --format ID,Phase,Progress --no-header --verbose 2>&1)
+          echo "Deployment triggered"
+          echo "$DEPLOYMENT_JSON"
+          if echo "$DEPLOYMENT_JSON" | grep -q "ERROR"; then
+            echo "Deployment failed"
+            exit 1
+          fi
+
+      - name: Health check
+        run: |
+          for i in {1..30}; do
+            if curl --fail https://${{ secrets.DO_APP_DOMAIN }}/api/health > /dev/null 2>&1; then
+              echo "✓ Health check passed"
+              exit 0
+            fi
+            echo "Attempt $i/30: waiting for deployment..."
+            sleep 10
+          done
+          echo "✗ Health check timeout"
+          exit 1
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          if [ -n "${{ secrets.DEPLOY_ALERT_WEBHOOK }}" ]; then
+            curl -X POST "${{ secrets.DEPLOY_ALERT_WEBHOOK }}" \
+              -H "Content-Type: application/json" \
+              -d "{\"text\": \"❌ Deployment failed for ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}"
+          fi

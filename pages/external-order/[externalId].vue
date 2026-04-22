@@ -71,7 +71,7 @@ async function handleSubmit() {
 <template>
   <div class="mx-auto min-h-screen max-w-xl px-4 py-8">
     <header class="mb-6 flex items-center gap-3">
-      <img src="/logo.svg" alt="Jomini" class="h-10 w-10" />
+      <img src="/logo.svg" alt="Jomini" class="h-10 w-10" >
       <h1 class="text-xl font-semibold">Jomini</h1>
     </header>
 
@@ -124,17 +124,17 @@ async function handleSubmit() {
 
         <div>
           <label class="label">{{ $t('customer.form.fullname') }} *</label>
-          <input v-model="draft.fullname" class="input" required />
+          <input v-model="draft.fullname" class="input" required >
         </div>
 
         <div>
           <label class="label">Phone *</label>
-          <input v-model="draft.phone" type="tel" class="input" required />
+          <input v-model="draft.phone" type="tel" class="input" required >
         </div>
 
         <div>
           <label class="label">{{ $t('customer.form.gameId') }} *</label>
-          <input v-model="draft.gameId" class="input" required />
+          <input v-model="draft.gameId" class="input" required >
         </div>
 
         <div>
@@ -145,17 +145,17 @@ async function handleSubmit() {
               {{ p.name }} ({{ p.amount }})
             </option>
           </select>
-          <input v-else v-model="draft.buyAmount" class="input" placeholder="Amount" required />
+          <input v-else v-model="draft.buyAmount" class="input" placeholder="Amount" required >
         </div>
 
         <div>
           <label class="label">{{ $t('customer.form.paidAmount') }} *</label>
-          <input v-model="draft.paidAmount" type="number" step="0.01" class="input" required />
+          <input v-model="draft.paidAmount" type="number" step="0.01" class="input" required >
         </div>
 
         <div>
           <label class="label">{{ $t('customer.form.receipt') }}</label>
-          <input v-model="draft.receiptUrl" class="input" placeholder="https://..." />
+          <input v-model="draft.receiptUrl" class="input" placeholder="https://..." >
           <p class="mt-1 text-xs text-zinc-500">{{ $t('customer.form.receiptHelper') }}</p>
         </div>
 

@@ -6,12 +6,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-04-01',
   devtools: { enabled: !isProd },
   srcDir: '.',
-  modules: [
-    '@pinia/nuxt',
-    '@nuxtjs/i18n',
-    '@vueuse/nuxt',
-    '@nuxt/eslint',
-  ],
+  modules: ['@pinia/nuxt', '@nuxtjs/i18n', '@vueuse/nuxt', '@nuxt/eslint'],
   css: ['~/assets/css/tailwind.css'],
   postcss: {
     plugins: {
@@ -22,9 +17,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['composables', 'stores', 'utils'],
   },
-  components: [
-    { path: '@/components', pathPrefix: false },
-  ],
+  components: [{ path: '@/components', pathPrefix: false }],
   runtimeConfig: {
     databaseUrl: process.env.DATABASE_URL || '',
     jwtAccessSecret: process.env.JWT_ACCESS_SECRET || '',
@@ -90,9 +83,7 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Jomini Gaming business management system' },
       ],
-      link: [
-        { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' },
-      ],
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
     },
   },
   typescript: {
@@ -104,4 +95,5 @@ export default defineNuxtConfig({
       stylistic: false,
     },
   },
+  // @ts-expect-error: nitro config is valid but not typed in defineNuxtConfig
 })

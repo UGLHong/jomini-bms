@@ -29,6 +29,10 @@ function handleReceiptToggle() {
 const isOpen = computed(() => props.order.processStatus === 'open')
 const isProcessing = computed(() => props.order.processStatus === 'processing')
 const isTerminal = computed(() => ['done', 'closed', 'refund'].includes(props.order.processStatus))
+
+function copyOrderId() {
+  navigator.clipboard.writeText(props.order.id)
+}
 </script>
 
 <template>
@@ -37,7 +41,7 @@ const isTerminal = computed(() => ['done', 'closed', 'refund'].includes(props.or
       <button
         class="font-mono text-xs text-zinc-500 hover:text-brand-primary"
         :title="t('orders.actions.copyOrderId')"
-        @click="navigator.clipboard.writeText(order.id)"
+        @click="copyOrderId"
       >
         #{{ order.id }}
       </button>
@@ -88,7 +92,11 @@ const isTerminal = computed(() => ['done', 'closed', 'refund'].includes(props.or
     </section>
 
     <section v-if="showReceipt && order.receiptUrl" class="mt-3">
-      <img :src="order.receiptUrl" alt="Receipt" class="max-h-96 rounded-md border border-zinc-200 dark:border-zinc-800" />
+      <img
+        :src="order.receiptUrl"
+        alt="Receipt"
+        class="max-h-96 rounded-md border border-zinc-200 dark:border-zinc-800"
+      >
     </section>
 
     <footer class="mt-4 flex flex-wrap gap-2">

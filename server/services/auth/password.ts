@@ -5,12 +5,12 @@ const ARGON_OPTIONS = {
   memoryCost: 64 * 1024,
   timeCost: 3,
   parallelism: 1,
-} as const
+}
 
 export function hashPassword(password: string): Promise<string> {
   return argon2.hash(password, ARGON_OPTIONS)
 }
 
 export function verifyPassword(hash: string, password: string): Promise<boolean> {
-  return argon2.verify(hash, password, ARGON_OPTIONS)
+  return argon2.verify(hash, password)
 }

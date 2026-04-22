@@ -1,7 +1,10 @@
-import type { ProductRow, SupplierGameMetadata } from '@/server/db/schema'
-import type { ProcessCombination, ProcessFailure } from '@/server/db/schema'
+import type { ProductRow, SupplierGameMetadata, ProcessCombination, ProcessFailure  } from '@/server/db/schema'
 
-export type SplitStrategy = 'greedy_largest_first' | 'fewest_splits' | 'min_cost' | 'manual_override'
+export type SplitStrategy =
+  | 'greedy_largest_first'
+  | 'fewest_splits'
+  | 'min_cost'
+  | 'manual_override'
 
 export type DenominationInput = {
   amount: number
@@ -69,7 +72,11 @@ function manualOverride(
   for (const piece of pieces) {
     const parsed = Number.parseFloat(piece)
     if (!Number.isFinite(parsed)) {
-      failed.push({ amount: 0, reason: `invalid_override_piece:${piece}`, at: new Date().toISOString() })
+      failed.push({
+        amount: 0,
+        reason: `invalid_override_piece:${piece}`,
+        at: new Date().toISOString(),
+      })
       continue
     }
     const candidate =
@@ -81,7 +88,11 @@ function manualOverride(
     }
     totalCost += Number(candidate.cost)
     matchedTotal += Number(candidate.amount)
-    splits.push({ amount: Number(candidate.amount), combinationString: candidate.combination || candidate.name, productId: candidate.id })
+    splits.push({
+      amount: Number(candidate.amount),
+      combinationString: candidate.combination || candidate.name,
+      productId: candidate.id,
+    })
   }
 
   return {
@@ -151,10 +162,11 @@ function minCost(input: DenominationInput): DenominationResult {
   dp[0] = 0
 
   for (let i = 1; i <= scaledTarget; i += 1) {
+    dp[i] = Infinity
     for (const n of numeric) {
       const aInt = Math.round(n.amount * INT_SCALE)
-      if (aInt <= i && dp[i - aInt] + n.cost < dp[i]!) {
-        dp[i] = dp[i - aInt]! + n.cost
+      if (aInt <= i && (dp[i - aInt] ?? Infinity) + n.cost < (dp[i] ?? Infinity)) {
+        dp[i] = (dp[i - aInt] ?? 0) + n.cost
         pick[i] = n
       }
     }
@@ -179,7 +191,8 @@ function minCost(input: DenominationInput): DenominationResult {
 
   const matched = splits.reduce((sum, s) => sum + s.amount, 0)
   const remainder = Math.max(0, target - matched)
-  const failed: ProcessFailure[] = remainder > 1e-6 ? [{ amount: remainder, reason: 'no_denomination_match' }] : []
+  const failed: ProcessFailure[] =
+    remainder > 1e-6 ? [{ amount: remainder, reason: 'no_denomination_match' }] : []
 
   return {
     combinationString: splits.map((s) => s.combinationString || String(s.amount)).join(' + '),
@@ -211,10 +224,11 @@ function fewestSplits(input: DenominationInput): DenominationResult {
   dp[0] = 0
 
   for (let i = 1; i <= scaledTarget; i += 1) {
+    dp[i] = Infinity
     for (const n of numeric) {
       const aInt = Math.round(n.amount)
-      if (aInt <= i && dp[i - aInt] + 1 < dp[i]!) {
-        dp[i] = dp[i - aInt]! + 1
+      if (aInt <= i && (dp[i - aInt] ?? Infinity) + 1 < (dp[i] ?? Infinity)) {
+        dp[i] = (dp[i - aInt] ?? 0) + 1
         pick[i] = n
       }
     }
@@ -239,7 +253,8 @@ function fewestSplits(input: DenominationInput): DenominationResult {
 
   const matched = splits.reduce((sum, s) => sum + s.amount, 0)
   const remainder = Math.max(0, target - matched)
-  const failed: ProcessFailure[] = remainder > 1e-6 ? [{ amount: remainder, reason: 'no_denomination_match' }] : []
+  const failed: ProcessFailure[] =
+    remainder > 1e-6 ? [{ amount: remainder, reason: 'no_denomination_match' }] : []
 
   return {
     combinationString: splits.map((s) => s.combinationString || String(s.amount)).join(' + '),

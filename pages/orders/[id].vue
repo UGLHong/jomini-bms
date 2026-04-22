@@ -26,9 +26,9 @@ type SubmissionRow = {
   updatedAt: string
 }
 
-const { data: submissionsData, refresh: refreshSubmissions } = await useFetch<{ submissions: SubmissionRow[] }>(
-  () => `/api/orders/${orderId.value}/submissions`,
-)
+const { data: submissionsData, refresh: refreshSubmissions } = await useFetch<{
+  submissions: SubmissionRow[]
+}>(() => `/api/orders/${orderId.value}/submissions`)
 const submissions = computed(() => submissionsData.value?.submissions ?? [])
 
 useOrderRealtime((ev) => {
@@ -51,6 +51,7 @@ async function withBusy<T>(fn: () => Promise<T>) {
 }
 
 async function handleResubmit() {
+  // @ts-expect-error: Vue Router type inference stack depth
   await withBusy(() => $fetch(`/api/orders/${orderId.value}/resubmit`, { method: 'POST' }))
 }
 
@@ -70,17 +71,23 @@ async function handleDone() {
 }
 async function handleReject() {
   const remark = prompt('Reject reason?') ?? undefined
-  await withBusy(() => $fetch(`/api/orders/${orderId.value}/reject`, { method: 'POST', body: { remark } }))
+  await withBusy(() =>
+    $fetch(`/api/orders/${orderId.value}/reject`, { method: 'POST', body: { remark } }),
+  )
 }
 async function handleRefund() {
   const remark = prompt('Refund reason?') ?? undefined
-  await withBusy(() => $fetch(`/api/orders/${orderId.value}/refund`, { method: 'POST', body: { remark } }))
+  await withBusy(() =>
+    $fetch(`/api/orders/${orderId.value}/refund`, { method: 'POST', body: { remark } }),
+  )
 }
 </script>
 
 <template>
   <div class="mx-auto max-w-4xl px-4 py-6">
-    <button class="mb-4 text-sm text-zinc-600 hover:text-brand-primary" @click="router.back()">← Back</button>
+    <button class="mb-4 text-sm text-zinc-600 hover:text-brand-primary" @click="router.back()">
+      ← Back
+    </button>
 
     <div v-if="!order" class="py-8 text-center text-sm text-zinc-500">Loading...</div>
     <div v-else class="space-y-4">
@@ -99,15 +106,21 @@ async function handleRefund() {
         <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
           <div>
             <div class="text-xs uppercase tracking-wide text-zinc-500">Successful splits</div>
-            <pre class="rounded-md bg-zinc-50 p-3 text-xs dark:bg-zinc-900">{{ JSON.stringify(order.processSuccessful, null, 2) }}</pre>
+            <pre class="rounded-md bg-zinc-50 p-3 text-xs dark:bg-zinc-900">{{
+              JSON.stringify(order.processSuccessful, null, 2)
+            }}</pre>
           </div>
           <div>
             <div class="text-xs uppercase tracking-wide text-zinc-500">Pending splits</div>
-            <pre class="rounded-md bg-zinc-50 p-3 text-xs dark:bg-zinc-900">{{ JSON.stringify(order.processPending, null, 2) }}</pre>
+            <pre class="rounded-md bg-zinc-50 p-3 text-xs dark:bg-zinc-900">{{
+              JSON.stringify(order.processPending, null, 2)
+            }}</pre>
           </div>
           <div v-if="order.processFailed?.length">
             <div class="text-xs uppercase tracking-wide text-zinc-500">Failed splits</div>
-            <pre class="rounded-md bg-zinc-50 p-3 text-xs dark:bg-zinc-900">{{ JSON.stringify(order.processFailed, null, 2) }}</pre>
+            <pre class="rounded-md bg-zinc-50 p-3 text-xs dark:bg-zinc-900">{{
+              JSON.stringify(order.processFailed, null, 2)
+            }}</pre>
           </div>
         </div>
       </section>

@@ -48,22 +48,22 @@ function getServiceId(row: ProductDraft): string {
       <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
         <tr v-for="(row, index) in rows" :key="row.id ?? index">
           <td class="px-3 py-2">
-            <input :value="row.name" class="input" @input="(e) => handleCellInput(index, 'name', e)" />
+            <input :value="row.name" class="input" @input="(e) => handleCellInput(index, 'name', e)" >
           </td>
           <td class="px-3 py-2 w-28">
-            <input :value="row.amount" class="input" @input="(e) => handleCellInput(index, 'amount', e)" />
+            <input :value="row.amount" class="input" @input="(e) => handleCellInput(index, 'amount', e)" >
           </td>
           <td class="px-3 py-2 w-28">
-            <input :value="row.cost" type="number" step="0.0001" class="input" @input="(e) => handleCellInput(index, 'cost', e)" />
+            <input :value="row.cost" type="number" step="0.0001" class="input" @input="(e) => handleCellInput(index, 'cost', e)" >
           </td>
           <td class="px-3 py-2 w-28">
-            <input :value="row.selling" type="number" step="0.0001" class="input" @input="(e) => handleCellInput(index, 'selling', e)" />
+            <input :value="row.selling" type="number" step="0.0001" class="input" @input="(e) => handleCellInput(index, 'selling', e)" >
           </td>
           <td class="px-3 py-2 w-10 text-center">
-            <input :checked="row.isBaseAmount !== false" type="checkbox" @change="(e) => handleCellInput(index, 'isBaseAmount', e)" />
+            <input :checked="row.isBaseAmount !== false" type="checkbox" @change="(e) => handleCellInput(index, 'isBaseAmount', e)" >
           </td>
           <td class="px-3 py-2 w-40">
-            <input :value="row.combination ?? ''" class="input" @input="(e) => handleCellInput(index, 'combination', e)" />
+            <input :value="row.combination ?? ''" class="input" @input="(e) => handleCellInput(index, 'combination', e)" >
           </td>
           <td class="px-3 py-2 w-36">
             <input
@@ -71,7 +71,7 @@ function getServiceId(row: ProductDraft): string {
               class="input"
               placeholder="MLBB_ID_CP"
               @input="(e) => handleServiceIdInput(index, e, row)"
-            />
+            >
           </td>
           <td class="px-3 py-2 w-32">
             <select :value="row.status ?? 'active'" class="input" @change="(e) => handleCellInput(index, 'status', e)">

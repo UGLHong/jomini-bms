@@ -169,7 +169,7 @@ const kpi = computed(() => {
         <option value="">{{ t('orders.filterBySupplier') }}: All</option>
         <option v-for="s in suppliersData?.suppliers ?? []" :key="s.key" :value="s.key">{{ s.name }}</option>
       </select>
-      <input v-model="search" type="search" :placeholder="t('common.search')" class="input max-w-xs" />
+      <input v-model="search" type="search" :placeholder="t('common.search')" class="input max-w-xs" >
     </section>
 
     <div v-if="loading && visibleOrders.length === 0" class="py-8 text-center text-sm text-zinc-500">

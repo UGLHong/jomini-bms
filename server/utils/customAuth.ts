@@ -14,7 +14,7 @@ export function requireCustomAuth(event: H3Event): void {
 
   const a = Buffer.from(provided)
   const b = Buffer.from(expected)
-  if (a.length !== b.length || !timingSafeEqual(a, b)) {
+  if (a.length !== b.length || !timingSafeEqual(a as Buffer, b as Buffer)) {
     throw unauthorized('CustomAuth invalid')
   }
 }

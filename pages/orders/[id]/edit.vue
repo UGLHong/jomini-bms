@@ -54,39 +54,39 @@ async function handleSave() {
       <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
         <div>
           <label class="label">Full name</label>
-          <input v-model="order.fullname" class="input" />
+          <input v-model="order.fullname" class="input" >
         </div>
         <div>
           <label class="label">Phone</label>
-          <input v-model="order.phone" class="input" />
+          <input v-model="order.phone" class="input" >
         </div>
         <div>
           <label class="label">Game ID</label>
-          <input v-model="order.gameId" class="input" />
+          <input v-model="order.gameId" class="input" >
         </div>
         <div>
           <label class="label">IGN</label>
-          <input v-model="order.ign" class="input" />
+          <input v-model="order.ign" class="input" >
         </div>
         <div>
           <label class="label">Buy amount</label>
-          <input v-model="order.buyAmount" class="input" />
+          <input v-model="order.buyAmount" class="input" >
         </div>
         <div>
           <label class="label">Paid amount</label>
-          <input v-model="order.paidAmount" class="input" />
+          <input v-model="order.paidAmount" class="input" >
         </div>
         <div>
           <label class="label">Cost price</label>
-          <input v-model="order.costPrice" class="input" />
+          <input v-model="order.costPrice" class="input" >
         </div>
         <div>
           <label class="label">Supplier</label>
-          <input v-model="order.supplierKey" class="input" />
+          <input v-model="order.supplierKey" class="input" >
         </div>
         <div class="md:col-span-2">
           <label class="label">Combination</label>
-          <input v-model="order.amountCombinationString" class="input" />
+          <input v-model="order.amountCombinationString" class="input" >
         </div>
         <div class="md:col-span-2">
           <label class="label">Remark</label>

@@ -65,8 +65,8 @@ function copyToClipboard(text: string) {
     <div class="card mb-6 space-y-3 p-4">
       <h2 class="font-medium">{{ t('admin.users.invite') }}</h2>
       <div class="grid gap-3 sm:grid-cols-3">
-        <input v-model="inviteEmail" type="email" class="input" placeholder="email@company.com" />
-        <input v-model="inviteName" class="input" placeholder="Display name (optional)" />
+        <input v-model="inviteEmail" type="email" class="input" placeholder="email@company.com" >
+        <input v-model="inviteName" class="input" placeholder="Display name (optional)" >
         <select v-model="inviteRole" class="input">
           <option value="operator">operator</option>
           <option value="admin">admin</option>

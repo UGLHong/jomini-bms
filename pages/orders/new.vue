@@ -54,15 +54,15 @@ async function handleSubmit() {
       <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
         <div>
           <label class="label">Full name *</label>
-          <input v-model="draft.fullname" class="input" required />
+          <input v-model="draft.fullname" class="input" required >
         </div>
         <div>
           <label class="label">Phone</label>
-          <input v-model="draft.phone" class="input" />
+          <input v-model="draft.phone" class="input" >
         </div>
         <div>
           <label class="label">Email</label>
-          <input v-model="draft.email" type="email" class="input" />
+          <input v-model="draft.email" type="email" class="input" >
         </div>
         <div>
           <label class="label">Game *</label>
@@ -84,19 +84,19 @@ async function handleSubmit() {
         </div>
         <div>
           <label class="label">Game ID *</label>
-          <input v-model="draft.gameId" class="input" required />
+          <input v-model="draft.gameId" class="input" required >
         </div>
         <div>
           <label class="label">Buy amount *</label>
-          <input v-model="draft.buyAmount" class="input" required />
+          <input v-model="draft.buyAmount" class="input" required >
         </div>
         <div>
           <label class="label">Paid amount (RM) *</label>
-          <input v-model="draft.paidAmount" class="input" required />
+          <input v-model="draft.paidAmount" class="input" required >
         </div>
         <div class="md:col-span-2">
           <label class="label">Receipt URL</label>
-          <input v-model="draft.receiptUrl" class="input" placeholder="https://..." />
+          <input v-model="draft.receiptUrl" class="input" placeholder="https://..." >
         </div>
         <div class="md:col-span-2">
           <label class="label">Remark</label>

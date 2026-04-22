@@ -44,7 +44,7 @@ async function handleSave() {
     <div class="card space-y-3 p-4">
       <div>
         <label class="label">Title</label>
-        <input v-model="draft.title" class="input" />
+        <input v-model="draft.title" class="input" >
       </div>
       <div>
         <label class="label">Body (Markdown)</label>

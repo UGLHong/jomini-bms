@@ -4,7 +4,6 @@ import type { StockRow } from '@/server/db/schema'
 
 function makeStock(partial: Partial<StockRow> = {}): StockRow {
   return {
-    id: crypto.randomUUID(),
     gameKey: 'mlbb',
     remainingStock: '1000',
     outOfStockThreshold: 0,

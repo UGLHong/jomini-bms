@@ -48,11 +48,11 @@ function handleCheckBalance(key: string) {
           v-model="supplier.apiConfig.baseUrl"
           class="input"
           placeholder="https://api.quinngamingshop.com"
-        />
+        >
       </div>
       <div>
         <label class="label">Default contact (fallback phone)</label>
-        <input v-model="supplier.apiConfig.defaultContact" class="input" placeholder="08xxxxxxxxx" />
+        <input v-model="supplier.apiConfig.defaultContact" class="input" placeholder="08xxxxxxxxx" >
       </div>
     </div>
 
@@ -70,7 +70,7 @@ function handleCheckBalance(key: string) {
           type="password"
           autocomplete="new-password"
           placeholder="paste API key to update, empty to keep, space to clear"
-        />
+        >
       </div>
       <div class="flex items-end">
         <label class="inline-flex items-center gap-2 text-sm">
@@ -78,7 +78,7 @@ function handleCheckBalance(key: string) {
             :checked="supplier.apiConfig.autoSubmit !== false"
             type="checkbox"
             @change="(e) => (supplier.apiConfig.autoSubmit = (e.target as HTMLInputElement).checked)"
-          />
+          >
           Auto-submit on process
         </label>
       </div>

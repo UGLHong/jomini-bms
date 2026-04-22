@@ -80,28 +80,28 @@ async function handleSave() {
         <div class="grid gap-3 sm:grid-cols-4">
           <div>
             <label class="label">Key</label>
-            <input v-model="game.key" class="input" :disabled="!!data?.games?.find((g) => g.key === game.key)" />
+            <input v-model="game.key" class="input" :disabled="!!data?.games?.find((g) => g.key === game.key)" >
           </div>
           <div>
             <label class="label">Name</label>
-            <input v-model="game.name" class="input" />
+            <input v-model="game.name" class="input" >
           </div>
           <div>
             <label class="label">Currency label</label>
-            <input v-model="game.currencyLabel" class="input" />
+            <input v-model="game.currencyLabel" class="input" >
           </div>
           <div>
             <label class="label">Sort order</label>
-            <input v-model.number="game.sortOrder" type="number" class="input" />
+            <input v-model.number="game.sortOrder" type="number" class="input" >
           </div>
         </div>
         <div class="flex items-center gap-4">
           <label class="inline-flex items-center gap-2 text-sm">
-            <input v-model="game.enabled" type="checkbox" /> Enabled
+            <input v-model="game.enabled" type="checkbox" > Enabled
           </label>
           <div class="flex-1">
             <label class="label">Icon URL</label>
-            <input v-model="game.iconUrl" class="input" type="url" placeholder="https://..." />
+            <input v-model="game.iconUrl" class="input" type="url" placeholder="https://..." >
           </div>
         </div>
         <details>

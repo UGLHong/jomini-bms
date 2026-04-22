@@ -36,7 +36,7 @@ async function handleSubmit(event: Event) {
 <template>
   <form class="card space-y-5 p-8" @submit="handleSubmit">
     <div class="space-y-1 text-center">
-      <img src="/logo.svg" alt="Jomini" class="mx-auto h-12 w-12" />
+      <img src="/logo.svg" alt="Jomini" class="mx-auto h-12 w-12" >
       <h1 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
         Jomini BMS
       </h1>
@@ -52,7 +52,7 @@ async function handleSubmit(event: Event) {
         autocomplete="email"
         required
         class="input"
-      />
+      >
     </div>
 
     <div>
@@ -64,7 +64,7 @@ async function handleSubmit(event: Event) {
         autocomplete="current-password"
         required
         class="input"
-      />
+      >
     </div>
 
     <p v-if="error" class="text-sm text-red-600">{{ error }}</p>

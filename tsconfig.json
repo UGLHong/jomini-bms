@@ -4,13 +4,19 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node"]
+    "skipLibCheck": true,
+    "types": ["node", "vitest/globals"],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "moduleResolution": "bundler"
   },
   "include": [
     "**/*.ts",
     "**/*.vue",
+    "**/*.mts",
     "scripts/**/*.ts",
     "server/**/*.ts",
-    "tests/**/*.ts"
-  ]
+    "tests/**/*.ts",
+    ".nuxt/nuxt.d.ts"
+  ],
+  "exclude": ["node_modules", ".output", "dist"]
 }

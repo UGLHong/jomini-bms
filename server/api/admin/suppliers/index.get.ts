@@ -1,4 +1,4 @@
-import { asc, eq } from 'drizzle-orm'
+import { asc } from 'drizzle-orm'
 import { useDb } from '@/server/db/client'
 import { supplierGameTable, supplierTable } from '@/server/db/schema'
 import { requireUser } from '@/server/utils/auth-guard'
@@ -8,9 +8,7 @@ export default defineEventHandler(async (event) => {
   const db = useDb()
   const suppliers = await db.select().from(supplierTable).orderBy(asc(supplierTable.name))
 
-  const mappings = await db
-    .select()
-    .from(supplierGameTable)
+  const mappings = await db.select().from(supplierGameTable)
 
   const withGames = suppliers.map((s) => {
     const { apiKey, ...rest } = s

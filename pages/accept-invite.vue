@@ -84,18 +84,18 @@ async function handleSubmit(event: Event) {
       <form class="space-y-4" @submit="handleSubmit">
         <div>
           <label class="label" for="display-name">Display name</label>
-          <input id="display-name" v-model="displayName" type="text" class="input" required />
+          <input id="display-name" v-model="displayName" type="text" class="input" required >
         </div>
 
         <div>
           <label class="label" for="new-password">{{ t('auth.password') }}</label>
-          <input id="new-password" v-model="password" type="password" autocomplete="new-password" class="input" required />
+          <input id="new-password" v-model="password" type="password" autocomplete="new-password" class="input" required >
           <p class="mt-1 text-xs text-zinc-500">{{ t('auth.passwordMinLength') }}</p>
         </div>
 
         <div>
           <label class="label" for="confirm-password">Confirm password</label>
-          <input id="confirm-password" v-model="password2" type="password" autocomplete="new-password" class="input" required />
+          <input id="confirm-password" v-model="password2" type="password" autocomplete="new-password" class="input" required >
         </div>
 
         <p v-if="error" class="text-sm text-red-600">{{ error }}</p>

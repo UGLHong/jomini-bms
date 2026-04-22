@@ -85,11 +85,11 @@ const profitSeries = computed(() =>
     <section class="card mb-4 flex flex-wrap items-end gap-3 p-4">
       <div>
         <label class="label">{{ t('reports.filters.from') }}</label>
-        <input v-model="filters.from" type="date" class="input" />
+        <input v-model="filters.from" type="date" class="input" >
       </div>
       <div>
         <label class="label">{{ t('reports.filters.to') }}</label>
-        <input v-model="filters.to" type="date" class="input" />
+        <input v-model="filters.to" type="date" class="input" >
       </div>
       <div>
         <label class="label">{{ t('reports.filters.game') }}</label>

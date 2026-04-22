@@ -129,11 +129,11 @@ async function handleSave() {
         <div class="grid gap-3 sm:grid-cols-3">
           <div>
             <label class="label">Key</label>
-            <input v-model="supplier.key" class="input" :disabled="!!suppliersData?.suppliers?.find((s) => s.key === supplier.key)" />
+            <input v-model="supplier.key" class="input" :disabled="!!suppliersData?.suppliers?.find((s) => s.key === supplier.key)" >
           </div>
           <div>
             <label class="label">Name</label>
-            <input v-model="supplier.name" class="input" />
+            <input v-model="supplier.name" class="input" >
           </div>
           <div>
             <label class="label">Relay channel</label>
@@ -146,7 +146,7 @@ async function handleSave() {
         <div class="grid gap-3 sm:grid-cols-2">
           <div>
             <label class="label">Telegram group ID</label>
-            <input v-model="supplier.telegramGroupId" class="input" placeholder="-1001234567890" />
+            <input v-model="supplier.telegramGroupId" class="input" placeholder="-1001234567890" >
           </div>
           <div>
             <label class="label">Telegram mentions (comma-separated)</label>
@@ -154,7 +154,7 @@ async function handleSave() {
               class="input"
               :value="supplier.telegramMentions.join(', ')"
               @input="(e) => handleMentionsChange(supplier, (e.target as HTMLInputElement).value)"
-            />
+            >
           </div>
         </div>
         <div>
@@ -179,7 +179,7 @@ async function handleSave() {
                 type="checkbox"
                 :checked="!!supplier.games.find((g) => g.gameKey === game.key)"
                 @change="toggleGame(supplier, game.key)"
-              />
+              >
               {{ game.name }}
             </label>
           </div>
@@ -191,10 +191,10 @@ async function handleSave() {
             <div v-for="g in supplier.games" :key="g.gameKey" class="grid grid-cols-5 items-center gap-2 text-sm">
               <span>{{ availableGames.find((a) => a.key === g.gameKey)?.name ?? g.gameKey }}</span>
               <label class="inline-flex items-center gap-1">
-                <input v-model="g.enabled" type="checkbox" /> enabled
+                <input v-model="g.enabled" type="checkbox" > enabled
               </label>
               <label class="inline-flex items-center gap-1">
-                <input v-model="g.isDefault" type="checkbox" /> default
+                <input v-model="g.isDefault" type="checkbox" > default
               </label>
               <label class="col-span-2">
                 <span class="mr-1 text-xs text-zinc-500">Split:</span>
@@ -210,7 +210,7 @@ async function handleSave() {
         </div>
 
         <label class="inline-flex items-center gap-2 text-sm">
-          <input v-model="supplier.enabled" type="checkbox" /> Enabled
+          <input v-model="supplier.enabled" type="checkbox" > Enabled
         </label>
       </div>
     </div>

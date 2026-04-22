@@ -48,8 +48,8 @@ async function handleCopy(externalId: string) {
     <section class="card mb-6 p-4">
       <h2 class="mb-3 text-lg font-semibold">Generate new link</h2>
       <div class="grid grid-cols-1 gap-3 md:grid-cols-4">
-        <input v-model="draft.userId" class="input" placeholder="User ID (optional)" />
-        <input v-model="draft.responsePath" class="input" placeholder="Response path (optional)" />
+        <input v-model="draft.userId" class="input" placeholder="User ID (optional)" >
+        <input v-model="draft.responsePath" class="input" placeholder="Response path (optional)" >
         <input
           v-model.number="draft.expiresInHours"
           type="number"
@@ -57,7 +57,7 @@ async function handleCopy(externalId: string) {
           max="720"
           class="input"
           placeholder="Expires (hours)"
-        />
+        >
         <button class="btn-primary" :disabled="creating" @click="handleCreate">Create link</button>
       </div>
     </section>
@@ -71,7 +71,7 @@ async function handleCopy(externalId: string) {
             <th class="px-3 py-2">Expires</th>
             <th class="px-3 py-2">Consumed</th>
             <th class="px-3 py-2">Order</th>
-            <th class="px-3 py-2"></th>
+            <th class="px-3 py-2"/>
           </tr>
         </thead>
         <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">

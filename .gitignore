@@ -26,6 +26,9 @@ pnpm-debug.log*
 .env.*
 !.env.example
 
+# GitHub secrets
+.github/_secrets
+
 # Database
 *.sqlite
 *.db

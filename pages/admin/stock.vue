@@ -61,11 +61,11 @@ async function handleSave(row: StockRow) {
         <div class="grid gap-3 sm:grid-cols-4">
           <div>
             <label class="label">Remaining stock</label>
-            <input v-model="row.remainingStock" type="number" step="0.01" class="input" />
+            <input v-model="row.remainingStock" type="number" step="0.01" class="input" >
           </div>
           <div>
             <label class="label">Out-of-stock threshold</label>
-            <input v-model.number="row.outOfStockThreshold" type="number" class="input" />
+            <input v-model.number="row.outOfStockThreshold" type="number" class="input" >
           </div>
           <div>
             <label class="label">Restock at</label>
@@ -77,11 +77,11 @@ async function handleSave(row: StockRow) {
                 const value = (e.target as HTMLInputElement).value
                 row.restockAt = value ? new Date(value).toISOString() : null
               }"
-            />
+            >
           </div>
           <div class="flex items-end gap-2">
             <label class="inline-flex items-center gap-2 text-sm">
-              <input v-model="row.stockAvailable" type="checkbox" /> Stock available
+              <input v-model="row.stockAvailable" type="checkbox" > Stock available
             </label>
           </div>
         </div>

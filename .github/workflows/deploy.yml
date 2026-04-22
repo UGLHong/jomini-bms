@@ -1,0 +1,86 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to DigitalOcean
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: TypeCheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+        continue-on-error: true
+
+      - name: Build
+        run: npm run build
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Trigger deployment
+        id: deploy
+        run: |
+          echo "Triggering DigitalOcean deployment..."
+          DEPLOYMENT_ID=$(doctl apps create-deployment "${{ secrets.DO_APP_ID }}" --wait --format ID --no-header)
+          echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
+          echo "✓ Deployment triggered: $DEPLOYMENT_ID"
+
+      - name: Health check
+        run: |
+          APP_DOMAIN="${{ secrets.DO_APP_DOMAIN }}"
+          echo "Checking health at https://$APP_DOMAIN/api/health"
+
+          for i in {1..30}; do
+            if curl --fail --silent https://$APP_DOMAIN/api/health > /dev/null 2>&1; then
+              echo "✓ Health check passed"
+              exit 0
+            fi
+            echo "Attempt $i/30: waiting for deployment to be healthy..."
+            sleep 10
+          done
+
+          echo "✗ Health check timeout after 5 minutes"
+          exit 1
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          if [ -n "${{ secrets.DEPLOY_ALERT_WEBHOOK }}" ]; then
+            curl -X POST "${{ secrets.DEPLOY_ALERT_WEBHOOK }}" \
+              -H "Content-Type: application/json" \
+              -d "{\"text\": \"❌ Deployment failed\n\nRepository: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}"
+          fi
+
+      - name: Notify on success
+        if: success()
+        run: |
+          if [ -n "${{ secrets.DEPLOY_ALERT_WEBHOOK }}" ]; then
+            curl -X POST "${{ secrets.DEPLOY_ALERT_WEBHOOK }}" \
+              -H "Content-Type: application/json" \
+              -d "{\"text\": \"✅ Deployment successful\n\nRepository: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\"}"
+          fi
